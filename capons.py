@@ -13,7 +13,7 @@ freqs = -0.2, 0.2, -0.3, 0.3, 0.09
 sgn = GenerateSignal(Ts, N, freqs)
 
 #add some noise:
-sgn = sgn + 1*np.random.rand(len(sgn))+ 1j*np.random.rand(len(sgn))
+sgn = sgn + 5*np.random.rand(len(sgn))+ 5j*np.random.rand(len(sgn))
 sgn = sgn-np.mean(sgn)
 ary = ZeroPad(sgn,m-1)
 Ry = np.cov(ary)
@@ -24,7 +24,7 @@ print "RyI Shape: ", RyI.shape
 #Defining the a(omega) vector:
 a = np.zeros_like(range(m))+np.zeros_like(range(m),complex)
 
-omega = -0.1
+omega = 0.2
 print "Omega: ", omega
 for m in range(len(a)):
     a[m] = np.complex(np.cos(-m*omega),np.sin(-m*omega))
@@ -69,14 +69,14 @@ for i,k in enumerate(w):
 
 P=np.array(P)
 
-ft = fftpack.fft(sgn,n=len(sgn))
-xv = np.fft.fftfreq(len(sgn),d=1)
+ft = fftpack.fft(sgn,n=10*len(sgn))
+xv = np.fft.fftfreq(10*len(sgn),d=1)
 
 plt.subplot(311)
-plt.plot(np.real(sgn))
-plt.plot(np.imag(sgn))
+plt.plot(np.real(sgn),'r-')
+plt.plot(np.imag(sgn),'b-')
 plt.subplot(312)
-plt.plot(w,P)
+plt.plot(w/(2*pi),P,'ro')
 plt.subplot(313)
-plt.plot(xv,np.abs(ft))
+plt.plot(xv,np.abs(ft),'ro')
 plt.show()

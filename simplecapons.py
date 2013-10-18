@@ -5,7 +5,7 @@ from scipy import fftpack, pi
 import matplotlib.pyplot as plt
 
 #Frequencies to be used in the signal
-freqs = 0.09, -0.2, 0.2, -0.3, 0.3
+freqs = 0.09, -0.2, 0.2, -0.3, 0.3, 0.08, -0.21, 0.22, -0.31, 0.32, 0.093, -0.24, 0.25, -0.34, 0.35, 0.098
 
 time = np.arange(0,64,1)
 sgn = np.zeros_like(time)+np.zeros_like(time,complex)
@@ -16,7 +16,8 @@ sgn3 = np.zeros_like(time)+np.zeros_like(time,complex)
 sgn4 = np.zeros_like(time)+np.zeros_like(time,complex)
 sgn5 = np.zeros_like(time)+np.zeros_like(time,complex)
 
-M=np.mat([sgn1,sgn2,sgn3,sgn4,sgn5])
+
+M=np.mat([sgn1,sgn2,sgn3,sgn4,sgn5,sgn1,sgn2,sgn3,sgn4,sgn5,sgn1,sgn2,sgn3,sgn4,sgn5,sgn1])
 
 k=0
 for freq in freqs:
@@ -35,7 +36,7 @@ print RyI
 print "RyI Shape: ", RyI.shape
 
 ##Defining the a(omega) vector:
-a = np.zeros_like(range(5))+np.zeros_like(range(5),complex)
+a = np.zeros_like(range(16))+np.zeros_like(range(16),complex)
 
 omega = -0.1
 print "Omega: ", omega
@@ -58,7 +59,7 @@ w = np.arange(-pi,pi,0.01)
 H = np.zeros_like(w)
 
 for i,k in enumerate(w):
-	a = np.zeros_like(range(5))+np.zeros_like(range(5),complex)
+	a = np.zeros_like(range(16))+np.zeros_like(range(16),complex)
 	for m in range(len(a)):
 		a[m] = np.complex(np.cos(-m*k),np.sin(-m*k))
 	a=np.matrix(a)
@@ -72,7 +73,7 @@ H=np.array(H)
 P = np.zeros_like(w)
 
 for i,k in enumerate(w):
-	a = np.zeros_like(range(5))+np.zeros_like(range(5),complex)
+	a = np.zeros_like(range(16))+np.zeros_like(range(16),complex)
 	for m in range(len(a)):
 		a[m] = np.complex(np.cos(-m*k),np.sin(-m*k))
 	a=np.matrix(a)
