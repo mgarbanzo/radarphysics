@@ -13,7 +13,7 @@ freqs = -0.2, 0.2, -0.3, 0.3, 0.09
 sgn = GenerateSignal(Ts, N, freqs)
 
 #add some noise:
-sgn = sgn + 5*np.random.rand(len(sgn))+ 5j*np.random.rand(len(sgn))
+sgn = sgn + 0*np.random.rand(len(sgn))+ 0j*np.random.rand(len(sgn))
 sgn = sgn-np.mean(sgn)
 ary = ZeroPad(sgn,m-1)
 Ry = np.cov(ary)
