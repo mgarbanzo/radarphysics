@@ -13,7 +13,7 @@ freqs = -0.2, 0.2, -0.3, 0.3, 0.09
 sgn = GenerateSignal(Ts, N, freqs)
 
 #add some noise:
-sgn = sgn + 0*np.random.rand(len(sgn))+ 0j*np.random.rand(len(sgn))
+sgn = sgn + 1*np.random.rand(len(sgn))+ 1j*np.random.rand(len(sgn))
 sgn = sgn-np.mean(sgn)
 ary = ZeroPad(sgn,m-1)
 Ry = np.cov(ary)
@@ -22,59 +22,45 @@ RyI = Ry.I
 print "RyI Shape: ", RyI.shape
 
 #Defining the a(omega) vector:
-a = np.zeros_like(range(m))+np.zeros_like(range(m),complex)
-
-omega = -0.1
+omega = -2*pi/10
 print "Omega: ", omega
-for m in range(len(a)):
-    a[m] = np.complex(np.cos(-m*omega),np.sin(-m*omega))
+m=np.arange(m)
+a = np.exp(-m*omega*1j)
 
 a=np.matrix(a)
 print "a Shape: ", a.shape
 print "a.H Shape: ", a.H.shape
 
+#FILTER
 h = RyI*a.T/(a.H.T*RyI*a.T)
 
-print h
-
 HO = h.H*a.T
-print HO
+print HO, "This needs to be one"
 
-w = np.arange(-pi,pi,0.01)
-H = np.zeros_like(w)
+w = np.arange(-pi,pi,0.01)     #Frequencies for the final freq response and freq content
+H = np.zeros_like(w)           #H contains the freq response
+P = np.zeros_like(w)           #P contains the freq content
 
-#Frequency response
-for i,k in enumerate(w):
-	a = np.zeros_like(range(16))+np.zeros_like(range(16),complex)
-	for m in range(len(a)):
-		a[m] = np.complex(np.cos(-m*k),np.sin(-m*k))
+for i,omega in enumerate(w):
+	a = np.exp(-m*omega*1j)
 	a=np.matrix(a)
-	tmp = np.conjugate(h).T*a.T
-	#print tmp
-	H[i] = np.real(np.abs(tmp))
-
+	
+	tmp1 = np.conjugate(h).T*a.T
+	#Frequency response
+	H[i] = np.real(np.abs(tmp1))
+	#Power Spectral Density
+	tmp2 = 1/(a.H.T*RyI*a.T)
+	P[i] = np.real(np.abs(tmp2))
+	
 H=np.array(H)
-#Power Spectral Density
-
-P = np.zeros_like(w)
-
-for i,k in enumerate(w):
-	a = np.zeros_like(range(16))+np.zeros_like(range(16),complex)
-	for m in range(len(a)):
-		a[m] = np.complex(np.cos(-m*k),np.sin(-m*k))
-	a=np.matrix(a)
-	tmp = 1/(a.H.T*RyI*a.T)
-	#print tmp
-	P[i] = np.real(np.abs(tmp))
-
 P=np.array(P)
 
 ft = fftpack.fft(sgn,n=10*len(sgn))
 xv = np.fft.fftfreq(10*len(sgn),d=1)
 
 plt.subplot(311)
-plt.plot(np.real(sgn),'r-')
-plt.plot(np.imag(sgn),'b-')
+plt.plot(w/(2*pi),np.real(H),'r-')
+plt.plot(w/(2*pi),np.imag(H),'b-')
 plt.subplot(312)
 plt.plot(w/(2*pi),P,'ro')
 plt.subplot(313)

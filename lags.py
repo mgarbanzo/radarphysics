@@ -31,22 +31,5 @@ def GenerateSignal(Ts, N, freqs):
 	time = np.arange(0,N,1)
 	sgn = np.zeros_like(time)+np.zeros_like(time,complex)
 	for freq in freqs:
-		real = np.cos(2*np.pi*freq*time)
-		imag = np.sin(2*np.pi*freq*time)
-		for n in range(len(time)):
-			sgn[n] += np.complex(real[n],imag[n])
+		sgn += np.exp(2*np.pi*freq*time*1j)
 	return sgn
-
-#N=64
-#m=16
-#Ts=1
-#freqs = -0.2, 0.2, -0.3, 0.3, 0.09
-
-#sgn = GenerateSignal(Ts, N, freqs)
-#ary = ZeroPad(sgn,m)
-
-#plt.plot(np.real(sgn))
-#plt.plot(np.imag(sgn))
-#print ary
-#print np.cov(ary)
-#plt.show()
